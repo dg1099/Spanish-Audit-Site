@@ -1,0 +1,9 @@
+[theme]
+base = "light"
+primaryColor = "black"
+backgroundColor = "white"
+secondaryBackgroundColor = "#fdfdfd"
+textColor = "#4285F4"
+linkColor = "#9aafc7"
+font = "Roboto, sans-serif"
+baseRadius = "2rem"
