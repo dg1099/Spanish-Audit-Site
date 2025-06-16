@@ -20,7 +20,7 @@ df = pd.read_csv('engLocAccuracy1.csv')
 st.write(df.sample(n=10).style.set_properties(color='#636363'))
 
 st.subheader('Aggregation Tables')
-st.write('To make the data meaningful, here are a few aggregated tables that show key differences' \
+st.write('To make the data meaningful, here are a few aggregated tables that show key differences ' \
 'in Google Search results')
 count = df.groupby('domain')['domain'].value_counts()
 count = count.to_frame().reset_index().sort_values(by='domain')
