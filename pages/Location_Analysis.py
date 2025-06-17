@@ -21,6 +21,7 @@ def domestic_location_fig(data):
                     hover_name="accuracy", 
                     color_continuous_scale=px.colors.make_colorscale(["red", "orange", "yellow", "lightgreen", "green"]),
                     scope='usa')
+    fig.update_layout(title='Domestic Location Accuracy of Local Government Search Results')
     return fig
 
 st.title('Location Analysis')
