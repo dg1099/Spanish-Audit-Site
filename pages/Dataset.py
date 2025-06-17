@@ -18,8 +18,11 @@ st.header('Raw Data')
 st.write("This is a random sample of what our raw data looked like!")
 eng_df = pd.read_csv('engLocAccuracy1.csv')
 span_df = pd.read_csv('spanLocAccuracy1.csv')
-st.dataframe(eng_df.sample(n=10).style.set_properties(color='#636363'))
-st.dataframe(span_df.sample(n=10).style.set_properties(color='#636363'))
+lang = st.selectbox("Choose Raw Dataset", ["English", "Spanish"])
+if lang == "English":
+        st.dataframe(eng_df.sample(n=10).style.set_properties(color='#636363'))
+elif lang == "Spanish":
+       st.dataframe(span_df.sample(n=10).style.set_properties(color='#636363'))
 
 st.header('Aggregation Tables')
 st.write('To make the data meaningful, here are a few aggregated tables that show key differences ' \
@@ -38,5 +41,8 @@ span_adp = average_domain_pos(span_df)
 st.write('Each organic result has a position on the page, with a position of 1 meaning it is the ' \
         'very first result. In this table, the domains are sorted in descending order by number of appearances, ' \
         'with each domain having its average organic position')
-st.dataframe(eng_adp.style.set_properties(color='#636363'))
-st.dataframe(span_adp.style.set_properties(color='#636363'))
+lang_adp = st.selectbox("Choose Average Domain Position Dataset", ["English", "Spanish"])
+if lang_adp == "English":
+       st.dataframe(eng_adp.style.set_properties(color='#636363'))
+elif lang_adp == "Spanish":
+       st.dataframe(span_adp.style.set_properties(color='#636363'))
