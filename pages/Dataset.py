@@ -26,9 +26,9 @@ st.write('To make the data meaningful, here are a few aggregated tables that sho
         'in Google Search results')
 st.subheader('Average Domain Position')
 def average_domain_pos(data):
-    df1 = eng_df.groupby('domain')['domain'].value_counts()
+    df1 = data.groupby('domain')['domain'].value_counts()
     df1 = df1.to_frame().reset_index().sort_values(by='domain')
-    df2 = eng_df.groupby('domain')['org-position'].mean()
+    df2 = data.groupby('domain')['org-position'].mean()
     df2 = df2.to_frame().reset_index().sort_values(by='domain').rename(columns={'count':'# of appearances', 'org-position': 'average org-position'})
     df3 = pd.merge(df1, df2, on='domain')
     df3 = df3.sort_values(by='count', ascending=False)
