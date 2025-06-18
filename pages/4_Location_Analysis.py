@@ -26,7 +26,7 @@ def domestic_location_fig(data):
 
 st.title('Location Analysis')
 st.header('Domestic Location Analysis')
-st.write('After collecting our, we wanted to determine how accurate results were to the location it was searched from. ' \
+st.write('After collecting our data, we wanted to determine how accurate results were to the location it was searched from. ' \
         'For example, if the search were from Los Angeles, California, all results from California would ' \
         'be given an accuracy score of 1. Otherwise, it would be given a score of 0. We only gave these ' \
         'scores to government websites that were not on the federal level (i.e. sites like usa.gov would ' \
