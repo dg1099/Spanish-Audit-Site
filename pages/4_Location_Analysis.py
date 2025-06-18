@@ -32,6 +32,7 @@ st.write('After collecting our data, we wanted to determine how accurate results
         'scores to government websites that were not on the federal level (i.e. sites like usa.gov would ' \
         'be excluded). That means that the domestic location accuracy is based on municipal, local, district ' \
         'township, etc. sites that appeared.')
+# should probably mention the database we used
 st.write('We found that English searched generally performed well, with ' \
         'the lowest score of 0.45 given to Oklahoma, which could be explained by the fact that the sole ' \
         'locallity we observed was named Texas County. For Spanish, we found most scores close to 0, with ' \
