@@ -47,7 +47,7 @@ st.dataframe(tempdf.sort_values(by='difference').reset_index().drop('index', axi
 # st.dataframe(um)
 
 def gov_perc(county):
-      df = eng_df[span_df['location'] == county]
+      df = span_df[span_df['location'] == county]
       col1 = df.groupby('query')['query'].value_counts()
       col2 = df.groupby('query')['gov_type'].value_counts()
       df = pd.merge(col1, col2, on='query')
