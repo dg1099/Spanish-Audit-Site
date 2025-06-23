@@ -7,12 +7,12 @@ st.write('To make the data meaningful, here are a few aggregated tables that sho
 st.subheader('Average Domain Position')
 def average_domain_pos(data):
     df1 = data.groupby('domain')['domain'].value_counts()
-    df1 = df1.to_frame().reset_index().sort_values(by='domain').rename(columns={'count': '# of appearances'})
+    df1 = df1.to_frame().sort_values(by='domain').rename(columns={'count': '# of appearances'})
     df2 = data.groupby('domain')['org-position'].mean()
-    df2 = df2.to_frame().reset_index().sort_values(by='domain').rename(columns={'count': '# of appearances', 'org-position': 'average org-position'})
+    df2 = df2.to_frame().sort_values(by='domain').rename(columns={'count': '# of appearances', 'org-position': 'average org-position'})
     df3 = pd.merge(df1, df2, on='domain')
     df3 = df3.sort_values(by='# of appearances', ascending=False)
-    return df3
+    return df3.reset_index()
 
 eng_df = pd.read_csv('engLocAccuracy1.csv')
 span_df = pd.read_csv('spanLocAccuracy1.csv')
@@ -35,7 +35,7 @@ tempdf = pd.merge(col1, col2, on='domain', how='outer')
 tempdf = tempdf.fillna(0)
 tempdf = tempdf.rename(columns={'# of appearances_x': 'english appearances', '# of appearances_y': 'spanish appearances'})
 tempdf['difference'] = tempdf['english appearances'] - tempdf['spanish appearances']
-st.dataframe(tempdf.sort_values(by='difference'))
+st.dataframe(tempdf.sort_values(by='difference').reset_index().drop('index', axis=1))
 
 # what percentage of results were government for each query?
 # test1 = eng_df[eng_df['location'] == 'Yuma County']
@@ -45,3 +45,13 @@ st.dataframe(tempdf.sort_values(by='difference'))
 # test2 = span_df[span_df['location'] == 'Yuma County']
 
 # st.dataframe(um)
+
+def gov_perc(county):
+      df = eng_df[span_df['location'] == county]
+      col1 = df.groupby('query')['query'].value_counts()
+      col2 = df.groupby('query')['gov_type'].value_counts()
+      df = pd.merge(col1, col2, on='query')
+      df['percent'] = df['count_y']/df['count_x']
+      return df.reset_index()
+test = gov_perc('Maricopa County')
+st.write(test)
