@@ -49,9 +49,13 @@ st.dataframe(tempdf.sort_values(by='difference').reset_index().drop('index', axi
 def gov_perc(county):
       df = span_df[span_df['location'] == county]
       col1 = df.groupby('query')['query'].value_counts()
-      col2 = df.groupby('query')['gov_type'].value_counts()
+      st.write(col1.reset_index())
+      col2 = df.groupby('query')['gov_type'].agg('sum')
+      st.write(col2)
       df = pd.merge(col1, col2, on='query')
-      df['percent'] = df['count_y']/df['count_x']
+      st.write(df)
+      df['gov_type'] = df['gov_type'].apply(lambda x: x.count('g') if type(x) != int else 0)
+      df['percent'] = df['gov_type']/df['count']
       return df.reset_index()
-test = gov_perc('Maricopa County')
+test = gov_perc('Clark County')
 st.write(test)

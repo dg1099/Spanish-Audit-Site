@@ -19,6 +19,7 @@ st.write("This is a random sample of what our raw data looked like!")
 eng_df = pd.read_csv('engLocAccuracy1.csv')
 span_df = pd.read_csv('spanLocAccuracy1.csv')
 lang = st.selectbox("Choose Raw Dataset", ["English", "Spanish"])
+
 if lang == "English":
         st.dataframe(eng_df.sample(n=10).style.set_properties(color='#636363'))
 elif lang == "Spanish":
