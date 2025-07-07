@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import methods as m
 
 eng_df = m.load_data('engLocAccuracy1.csv')
