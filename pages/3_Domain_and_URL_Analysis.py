@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import methods as m
 
 soc_domains = [
                 'youtube.com', 
@@ -14,8 +15,8 @@ soc_domains = [
                 'tiktok.com',
                 ]
 
-eng_df = pd.read_csv('engLocAccuracy1.csv')
-span_df = pd.read_csv('spanLocAccuracy1.csv')
+eng_df = m.load_data('engLocAccuracy1.csv')
+span_df = m.load_data('spanLocAccuracy1.csv')
 
 eng_soc = eng_df[eng_df['domain'].isin(soc_domains)].sort_values(by='domain')
 eng_soc['count'] = 1#.to_frame().sort_values(by='count').reset_index()

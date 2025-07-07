@@ -1,5 +1,12 @@
 import streamlit as st
 import pandas as pd
+import methods as m
+
+eng_df = m.load_data('engLocAccuracy1.csv')
+span_df = m.load_data('spanLocAccuracy1.csv')
+
+rand_eng = m.sample(eng_df)
+rand_span = m.sample(span_df)
 
 st.title('Data Collection')
 st.header('Methodology')
@@ -16,11 +23,10 @@ st.write('''With these localities, we followed methods used in "Algorithmic Misj
 
 st.header('Raw Data')
 st.write("This is a random sample of what our raw data looked like!")
-eng_df = pd.read_csv('engLocAccuracy1.csv')
-span_df = pd.read_csv('spanLocAccuracy1.csv')
+
 lang = st.selectbox("Choose Raw Dataset", ["English", "Spanish"])
 
 if lang == "English":
-        st.dataframe(eng_df.sample(n=10).style.set_properties(color='#636363'))
+        st.dataframe(rand_eng.style.set_properties(color='#636363'))
 elif lang == "Spanish":
-       st.dataframe(span_df.sample(n=10).style.set_properties(color='#636363'))
+       st.dataframe(rand_span.style.set_properties(color='#636363'))
