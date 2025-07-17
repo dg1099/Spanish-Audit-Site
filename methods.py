@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+from trafilatura import fetch_url, extract_metadata
+import csv
+from htmldate import find_date
 
 @st.cache_data
 def load_data(csv):
@@ -39,3 +42,28 @@ def gov_perc(data, county):
       df['gov_type'] = df['gov_type'].apply(lambda x: x.count('g') if type(x) != int else 0)
       df['percent'] = df['gov_type']/df['count']
       return df.reset_index()
+
+def get_date(url):
+    download = fetch_url(url)
+    metadata = extract_metadata(download)
+    return metadata.date
+
+if __name__ == "__main__":
+    with open('spanLocAccuracy1.csv', 'r', encoding = 'utf-8') as inFile:
+        with open('last-updated.csv', 'w', encoding='utf-8', newline='') as outFile:
+            writer = csv.writer(outFile)
+            fieldnames = ['domain', 'title', 'link', 'gov_type', 'last_update']
+            writer.writerow(fieldnames)
+            reader = csv.DictReader(inFile)
+            for row in reader:
+                new = [row['domain'], row['title'], row['link'], row['gov_type']]
+                try:
+                    date = get_date(row['link'])
+                    # print(f'{row['title']}: {date}')
+                # except:
+                #     date = find_date(row['link'])
+                except:
+                    print(f'Failed: {row['link']}')
+                    date = 'Unknown'
+                new.append(date)
+                writer.writerow(new)
