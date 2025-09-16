@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from trafilatura import fetch_url, extract_metadata
-import csv
-from htmldate import find_date
 
 @st.cache_data
 def load_data(csv):
