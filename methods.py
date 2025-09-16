@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 from trafilatura import fetch_url, extract_metadata
 import csv
 from htmldate import find_date
@@ -43,27 +44,51 @@ def gov_perc(data, county):
       df['percent'] = df['gov_type']/df['count']
       return df.reset_index()
 
-def get_date(url):
-    download = fetch_url(url)
-    metadata = extract_metadata(download)
-    return metadata.date
+@st.cache_data
+def domestic_location(data):
+    spanStates = ['AZ', 'CA', 'CO', 'CT', 'FL', 'GA', 'ID', 'IL', 'KS', 'MD', 'MA', 'MI', 'NE', 'NV', 'NJ', 'NM', 'NY', 'OH', 'OK', 'PA', 'RI', 'TX', 'UT', 'VA', 'WA', 'WI']
+    gov_types = ['government', 'government affiliated']
 
-if __name__ == "__main__":
-    with open('spanLocAccuracy1.csv', 'r', encoding = 'utf-8') as inFile:
-        with open('last-updated.csv', 'w', encoding='utf-8', newline='') as outFile:
-            writer = csv.writer(outFile)
-            fieldnames = ['domain', 'title', 'link', 'gov_type', 'last_update']
-            writer.writerow(fieldnames)
-            reader = csv.DictReader(inFile)
-            for row in reader:
-                new = [row['domain'], row['title'], row['link'], row['gov_type']]
-                try:
-                    date = get_date(row['link'])
-                    # print(f'{row['title']}: {date}')
-                # except:
-                #     date = find_date(row['link'])
-                except:
-                    print(f'Failed: {row['link']}')
-                    date = 'Unknown'
-                new.append(date)
-                writer.writerow(new)
+    df = data[data['gov_type'].isin(gov_types)]
+    df = df[df['gov_state'] != 'DC']
+    df = df[df['gov_state'].isin(spanStates)]
+    df = df.groupby('state').mean('accuracy').reset_index()
+    df['accuracy'] = df['accuracy'].round(decimals=3)
+    return df
+
+@st.cache_data
+def domestic_fig(df):
+    fig = px.choropleth(df, locations=df['state'].tolist(),
+                    locationmode="USA-states",
+                    color="accuracy", 
+                    range_color=[0, 1],
+                    hover_name="accuracy", 
+                    color_continuous_scale=px.colors.make_colorscale(["red", "orange", "yellow", "lightgreen", "green"]),
+                    scope='usa')
+    fig.update_layout(title='Domestic Location Accuracy of Local Government Search Results')
+    return fig
+
+# def get_date(url):
+#     download = fetch_url(url)
+#     metadata = extract_metadata(download)
+#     return metadata.date
+
+# if __name__ == "__main__":
+#     with open('spanLocAccuracy1.csv', 'r', encoding = 'utf-8') as inFile:
+#         with open('last-updated.csv', 'w', encoding='utf-8', newline='') as outFile:
+#             writer = csv.writer(outFile)
+#             fieldnames = ['domain', 'title', 'link', 'gov_type', 'last_update']
+#             writer.writerow(fieldnames)
+#             reader = csv.DictReader(inFile)
+#             for row in reader:
+#                 new = [row['domain'], row['title'], row['link'], row['gov_type']]
+#                 try:
+#                     date = get_date(row['link'])
+#                     # print(f'{row['title']}: {date}')
+#                 # except:
+#                 #     date = find_date(row['link'])
+#                 except:
+#                     print(f'Failed: {row['link']}')
+#                     date = 'Unknown'
+#                 new.append(date)
+#                 writer.writerow(new)
