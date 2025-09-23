@@ -95,6 +95,7 @@ def soc_fig(eng_df, span_df):
     soc = pd.concat([eng_soc, span_soc]).sort_values(by='count')
     
     fig = px.bar(soc, x='domain', y='count', color='lang', barmode='group', hover_data='query')
+    fig.update_layout(title='Number of Social Media Domains by Language')
     return fig
 
 # def get_date(url):

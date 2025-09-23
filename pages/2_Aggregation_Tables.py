@@ -25,4 +25,4 @@ elif lang_adp == "Spanish":
 st.subheader('Domain Frequency By Language')
 st.dataframe(dom_freq)
 
-st.write(test)
+#st.write(test)

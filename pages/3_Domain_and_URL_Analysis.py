@@ -17,9 +17,10 @@ st.image("span_domain_type.png")
 eng_df = m.load_data('engLocAccuracy1.csv')
 span_df = m.load_data('spanLocAccuracy1.csv')
 
-soc = m.soc_fig(eng_df, span_df)
-st.plotly_chart(soc)
+st.header('Social Media')
 with st.expander('Learn More'):
     st.write('''Since there were significantly more social media results in the Spanish dataset, 
              we wanted to look further into which social media sites are appearing and which queries
              are producing these results.''')
+soc = m.soc_fig(eng_df, span_df)
+st.plotly_chart(soc)
