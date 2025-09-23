@@ -65,6 +65,38 @@ def domestic_fig(df):
     fig.update_layout(title='Domestic Location Accuracy of Local Government Search Results')
     return fig
 
+@st.cache_data
+def soc_fig(eng_df, span_df):
+    soc_domains = [
+                'youtube.com', 
+                'instagram.com',
+                'twitter.com',
+                'x.com',
+                'meta.com',
+                'facebook.com',
+                'pinterest.com',
+                'reddit.com',
+                'tiktok.com',
+                ]
+
+    eng_soc = eng_df[eng_df['domain'].isin(soc_domains)].sort_values(by='domain')
+    eng_soc['lang'] = 'english'
+    eng_soc = eng_soc[['domain', 'query', 'lang']]
+
+    span_soc = span_df[span_df['domain'].isin(soc_domains)]
+    span_soc['lang'] = 'spanish'
+    span_soc = span_soc[['domain', 'query', 'lang']]
+
+    eng_soc['count'] = eng_soc.groupby('query')['query'].transform('count')
+    eng_soc = eng_soc.drop_duplicates()
+    span_soc['count'] = span_soc.groupby('query')['query'].transform('count')
+    span_soc = span_soc.drop_duplicates()
+
+    soc = pd.concat([eng_soc, span_soc]).sort_values(by='count')
+    
+    fig = px.bar(soc, x='domain', y='count', color='lang', barmode='group', hover_data='query')
+    return fig
+
 # def get_date(url):
 #     download = fetch_url(url)
 #     metadata = extract_metadata(download)
